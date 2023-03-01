@@ -2,15 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Tamer from './Tamer';
 import {
   DefaultDataType,
-  FilterArgs,
-  FindArgs,
-  ForEachArgs,
-  GetPathArgs,
+  Filter,
+  Find,
+  ForEach,
+  GetPath,
+  Insert,
+  Move,
+  Remove,
   TamerOptions,
-  InsertArgs,
-  MoveArgs,
-  RemoveArgs,
-  UpdateArgs,
+  Update,
 } from './interfaces';
 
 export default function useTreeTamer<DataType extends object = DefaultDataType>(
@@ -18,41 +18,41 @@ export default function useTreeTamer<DataType extends object = DefaultDataType>(
   option?: TamerOptions<DataType>
 ) {
   const [tree, setTree] = useState<DataType[]>(data || []);
-  const [filterParams, setFilterParams] = useState<FilterArgs<DataType>>();
+  const [filterParams, setFilterParams] = useState<Parameters<Filter<DataType>>>();
 
   const tamer = useRef(new Tamer(option));
   useEffect(() => tamer.current.use(option), [option]);
 
-  const insert = useCallback((...args: InsertArgs<DataType>) => {
-    setTree(prev => tamer.current.insert(prev, ...args));
+  const insert: Insert<DataType> = useCallback((node, callback) => {
+    setTree(prev => tamer.current.insert(prev, node, callback));
   }, []);
-  const remove = useCallback((...args: RemoveArgs<DataType>) => {
-    setTree(prev => tamer.current.remove(prev, ...args));
+  const remove: Remove<DataType> = useCallback(callback => {
+    setTree(prev => tamer.current.remove(prev, callback));
   }, []);
-  const update = useCallback((...args: UpdateArgs<DataType>) => {
-    setTree(prev => tamer.current.update(prev, ...args));
+  const update: Update<DataType> = useCallback((callback, props) => {
+    setTree(prev => tamer.current.update(prev, callback, props));
   }, []);
-  const move = useCallback((...args: MoveArgs<DataType>) => {
-    setTree(prev => tamer.current.move(prev, ...args));
+  const move: Move<DataType> = useCallback((callback, parent) => {
+    setTree(prev => tamer.current.move(prev, callback, parent));
   }, []);
-  const setFilter = useCallback((...args: FilterArgs<DataType>) => {
+  const setFilter: Filter<DataType> = useCallback((...args) => {
     setFilterParams(args[0] ? args : undefined);
   }, []);
-  const find = useCallback(
-    (...args: FindArgs<DataType>) => {
-      return tamer.current.find(tree, ...args);
+  const find: Find<DataType> = useCallback(
+    callback => {
+      return tamer.current.find(tree, callback);
     },
     [tree]
   );
-  const forEach = useCallback(
-    (...args: ForEachArgs<DataType>) => {
-      return tamer.current.forEach(tree, ...args);
+  const forEach: ForEach<DataType> = useCallback(
+    callback => {
+      return tamer.current.forEach(tree, callback);
     },
     [tree]
   );
-  const getPath = useCallback(
-    (...args: GetPathArgs<DataType>) => {
-      return tamer.current.getPath(tree, ...args);
+  const getPath: GetPath<DataType> = useCallback(
+    callback => {
+      return tamer.current.getPath(tree, callback);
     },
     [tree]
   );
@@ -63,7 +63,7 @@ export default function useTreeTamer<DataType extends object = DefaultDataType>(
 
   return [
     filtered,
-    { set: setTree, insert, remove, update, move, setFilter, find, forEach, getPath },
+    { setTree, insert, remove, update, move, setFilter, find, forEach, getPath },
     tamer,
   ] as const;
 }
