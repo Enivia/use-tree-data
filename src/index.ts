@@ -1,4 +1,4 @@
-import useTreeTamer from './useTreeTamer';
-export { default as Tamer } from './Tamer';
+import useTreeData from './useTreeData';
+export { default as TreeHelper } from './TreeHelper';
 
-export default useTreeTamer;
+export default useTreeData;

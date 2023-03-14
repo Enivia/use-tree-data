@@ -1,4 +1,4 @@
-import { Tamer } from '..';
+import { TreeHelper } from '../dist';
 
 type CustomData = {
   id: string;
@@ -8,12 +8,12 @@ type CustomData = {
 
 describe('util: treeHelper', () => {
   const original = [{ id: '1', children: [{ id: '1-1' }, { id: '1-2' }] }, { id: '2' }];
-  const originalHelper = new Tamer();
+  const originalHelper = new TreeHelper();
   const custom = [{ id: '1', elements: [{ id: '1-1' }, { id: '1-2' }] }, { id: '2' }];
-  const customHelper = new Tamer<CustomData>({ children: 'elements' });
+  const customHelper = new TreeHelper<CustomData>({ childrenKey: 'elements' });
 
   it('insert', () => {
-    expect(originalHelper.insert(original, { id: '3' }, 'TREE_TAMER_ROOT')).toEqual([
+    expect(originalHelper.insert(original, { id: '3' })).toEqual([
       { id: '1', children: [{ id: '1-1' }, { id: '1-2' }] },
       { id: '2' },
       { id: '3' },
@@ -22,7 +22,7 @@ describe('util: treeHelper', () => {
       { id: '1', children: [{ id: '1-1' }, { id: '1-2' }] },
       { id: '2', children: [{ id: '2-1' }] },
     ]);
-    expect(customHelper.insert(custom, { id: '3' }, 'TREE_TAMER_ROOT')).toEqual([
+    expect(customHelper.insert(custom, { id: '3' })).toEqual([
       { id: '1', elements: [{ id: '1-1' }, { id: '1-2' }] },
       { id: '2' },
       { id: '3' },
@@ -63,7 +63,7 @@ describe('util: treeHelper', () => {
         n => n.id === '1'
       )
     ).toEqual([{ id: '1', children: [{ id: '1-1' }, { id: '1-2' }, { id: '2' }] }]);
-    expect(customHelper.move(custom, n => n.id === '1-2', 'TREE_TAMER_ROOT')).toEqual([
+    expect(customHelper.move(custom, n => n.id === '1-2')).toEqual([
       { id: '1', elements: [{ id: '1-1' }] },
       { id: '2' },
       { id: '1-2' },

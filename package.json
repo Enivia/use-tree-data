@@ -33,18 +33,18 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "use-tree-tamer",
-  "repository": "git@github.com:Enivia/use-tree-tamer.git",
-  "homepage": "https://github.com/Enivia/use-tree-tamer",
+  "name": "use-tree-data",
+  "repository": "git@github.com:Enivia/use-tree-data.git",
+  "homepage": "https://github.com/Enivia/use-tree-data",
   "author": "Enivia <aqingcc@outlook.com>",
-  "module": "dist/use-tree-tamer.esm.js",
+  "module": "dist/use-tree-data.esm.js",
   "size-limit": [
     {
-      "path": "dist/use-tree-tamer.cjs.production.min.js",
+      "path": "dist/use-tree-data.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/use-tree-tamer.esm.js",
+      "path": "dist/use-tree-data.esm.js",
       "limit": "10 KB"
     }
   ],

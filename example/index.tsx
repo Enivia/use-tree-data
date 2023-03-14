@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import useTreeTamer from '..';
+import useTreeData from '..';
 import { InsertPosition } from '../dist/interfaces';
 
 type TreeData = { id: string; name: string; children?: TreeData[] };
@@ -14,11 +14,11 @@ const treeData: TreeData[] = [
 
 const App = () => {
   const [position, setPosition] = React.useState<InsertPosition>('TAIL');
-  const [tree, actions] = useTreeTamer(treeData, { insertPosition: position });
+  const [tree, actions] = useTreeData(treeData, { insertPosition: position });
 
   const insertToRoot = () => {
     const id = Math.random().toString(16);
-    actions.insert({ id, name: `node-${id}` }, 'TREE_TAMER_ROOT');
+    actions.insert({ id, name: `node-${id}` });
   };
   const insertToNode1 = () => {
     const id = Math.random().toString(16);
@@ -32,7 +32,7 @@ const App = () => {
     actions.update(n => n.id === '3', { name: `updateName-${id}` });
   };
   const moveNode11 = () => {
-    actions.move(n => n.id === '1-1', 'TREE_TAMER_ROOT');
+    actions.move(n => n.id === '1-1');
   };
   const getPath11 = () => {
     const path = actions.getPath(n => n.id === '1-1');
@@ -42,7 +42,7 @@ const App = () => {
   return (
     <div>
       <div>
-        <button onClick={() => actions.set(treeData)}>reset</button>
+        <button onClick={() => actions.setTree(treeData)}>reset</button>
       </div>
       <div style={{ padding: '8px 0' }}>
         insert position:&nbsp;&nbsp;

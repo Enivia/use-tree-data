@@ -1,27 +1,21 @@
 import { produce } from 'immer';
-import {
-  DefaultDataType,
-  TamerOptions,
-  NodeCallback,
-  ParentCallback,
-  RootNode,
-} from './interfaces';
+import { DefaultDataType, TreeHelperOptions, NodeCallback } from './interfaces';
 import { find, forEach, getPath } from './utils';
 
-const DEFAULT_OPTIONS: TamerOptions<any> = { children: 'children', insertPosition: 'TAIL' };
-const ROOT: RootNode = 'TREE_TAMER_ROOT';
+const DEFAULT_OPTIONS: TreeHelperOptions<any> = { childrenKey: 'children', insertPosition: 'TAIL' };
+export const ROOT = 'TREE_HELPER_ROOT_NODE';
 
-class Tamer<DataType extends object = DefaultDataType> {
-  private options: TamerOptions<DataType> = DEFAULT_OPTIONS;
+class TreeHelper<DataType extends object = DefaultDataType> {
+  private options: TreeHelperOptions<DataType> = DEFAULT_OPTIONS;
 
   private $getChildren(node: DataType): DataType[] {
     // @ts-ignore
-    return node[this.options.children];
+    return node[this.options.childrenKey];
   }
 
   private $setChildren(node: DataType, children: DataType[]) {
     // @ts-ignore
-    node[this.options.children] = children;
+    node[this.options.childrenKey] = children;
   }
 
   private $addNode(node: DataType, children: DataType[]) {
@@ -33,19 +27,19 @@ class Tamer<DataType extends object = DefaultDataType> {
     return children;
   }
 
-  constructor(options?: TamerOptions<DataType>) {
+  constructor(options?: TreeHelperOptions<DataType>) {
     if (options) {
       this.use(options);
     }
   }
 
-  use = (options?: TamerOptions<DataType>) => {
-    this.options = { ...(DEFAULT_OPTIONS as TamerOptions<DataType>), ...options };
+  use = (options?: TreeHelperOptions<DataType>) => {
+    this.options = { ...(DEFAULT_OPTIONS as TreeHelperOptions<DataType>), ...options };
   };
 
-  insert = (tree: DataType[], node: DataType, callback: ParentCallback<DataType>) => {
+  insert = (tree: DataType[], node: DataType, callback?: NodeCallback<DataType>) => {
     return produce(tree, (draft: DataType[]) => {
-      if (callback === ROOT) {
+      if (!callback) {
         this.$addNode(node, draft);
         return;
       }
@@ -85,13 +79,13 @@ class Tamer<DataType extends object = DefaultDataType> {
     });
   };
 
-  move = (tree: DataType[], callback: NodeCallback<DataType>, parent: ParentCallback<DataType>) => {
+  move = (tree: DataType[], callback: NodeCallback<DataType>, parent?: NodeCallback<DataType>) => {
     return produce(tree, (draft: DataType[]) => {
       const node = this.find(draft, callback);
       if (!node) {
         return;
       }
-      const newParent = parent === ROOT ? ROOT : this.find(draft, parent);
+      const newParent = parent ? this.find(draft, parent) : ROOT;
       if (!newParent) {
         return;
       }
@@ -126,7 +120,7 @@ class Tamer<DataType extends object = DefaultDataType> {
       } else {
         const children = this.filter(this.$getChildren(n), callback, returnChildren);
         if (validate || children?.length) {
-          res.push({ ...n, [this.options.children as string]: children });
+          res.push({ ...n, [this.options.childrenKey as string]: children });
         }
       }
       return res;
@@ -143,4 +137,4 @@ class Tamer<DataType extends object = DefaultDataType> {
     forEach(tree, callback, n => this.$getChildren(n));
 }
 
-export default Tamer;
+export default TreeHelper;
