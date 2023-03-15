@@ -39347,7 +39347,15 @@ var App = function App() {
     console.log(path);
   };
 
-  return React.createElement("div", null, React.createElement("div", null, React.createElement("button", {
+  return React.createElement("div", null, React.createElement("a", {
+    href: "https://github.com/Enivia/use-tree-data",
+    target: "_blank",
+    style: {
+      position: 'fixed',
+      top: 10,
+      right: 10
+    }
+  }, "\uD83D\uDC49 github"), React.createElement("div", null, React.createElement("button", {
     onClick: function onClick() {
       return actions.setTree(treeData);
     }
@@ -39366,17 +39374,17 @@ var App = function App() {
     value: "TAIL"
   }, "TAIL"))), React.createElement("div", null, "operations:\xA0\xA0", React.createElement("button", {
     onClick: insertToRoot
-  }, "\u6DFB\u52A0\u81F3\u6839\u8282\u70B9"), React.createElement("button", {
+  }, "insert to root"), React.createElement("button", {
     onClick: insertToNode1
-  }, "\u6DFB\u52A0\u81F3 node-1"), React.createElement("button", {
+  }, "insert to node-1"), React.createElement("button", {
     onClick: removeNode21
-  }, "\u79FB\u9664 node-2-1"), React.createElement("button", {
+  }, "remove node-2-1"), React.createElement("button", {
     onClick: updateNode3
-  }, "\u66F4\u65B0 node-3"), React.createElement("button", {
+  }, "update node-3"), React.createElement("button", {
     onClick: moveNode11
-  }, "\u79FB\u52A8 node-1-1"), React.createElement("button", {
+  }, "move node-1-1"), React.createElement("button", {
     onClick: getPath11
-  }, "\u83B7\u53D6 node-1-1 \u8DEF\u5F84")), React.createElement("div", {
+  }, "get node-1-1 path")), React.createElement("div", {
     style: {
       background: '#f2f5f6',
       marginTop: 12
@@ -39413,7 +39421,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63315" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59364" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
