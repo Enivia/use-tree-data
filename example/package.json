@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "homepage": "https://enivia.github.io/use-tree-data",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"

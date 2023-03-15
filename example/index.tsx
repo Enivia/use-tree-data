@@ -41,6 +41,13 @@ const App = () => {
 
   return (
     <div>
+      <a
+        href="https://github.com/Enivia/use-tree-data"
+        target="_blank"
+        style={{ position: 'fixed', top: 10, right: 10 }}
+      >
+        👉 github
+      </a>
       <div>
         <button onClick={() => actions.setTree(treeData)}>reset</button>
       </div>
@@ -53,12 +60,12 @@ const App = () => {
       </div>
       <div>
         operations:&nbsp;&nbsp;
-        <button onClick={insertToRoot}>添加至根节点</button>
-        <button onClick={insertToNode1}>添加至 node-1</button>
-        <button onClick={removeNode21}>移除 node-2-1</button>
-        <button onClick={updateNode3}>更新 node-3</button>
-        <button onClick={moveNode11}>移动 node-1-1</button>
-        <button onClick={getPath11}>获取 node-1-1 路径</button>
+        <button onClick={insertToRoot}>insert to root</button>
+        <button onClick={insertToNode1}>insert to node-1</button>
+        <button onClick={removeNode21}>remove node-2-1</button>
+        <button onClick={updateNode3}>update node-3</button>
+        <button onClick={moveNode11}>move node-1-1</button>
+        <button onClick={getPath11}>get node-1-1 path</button>
       </div>
       <div style={{ background: '#f2f5f6', marginTop: 12 }}>
         <pre>{JSON.stringify(tree, null, 2)}</pre>
