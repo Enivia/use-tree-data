@@ -21,7 +21,7 @@ jobs:
 
       - name: Check if version has been updated
         id: check
-        uses: EndBug/version-check@v1
+        uses: EndBug/version-check@v2
 
       - name: Log version check result
         if: steps.check.outputs.changed == 'true'
