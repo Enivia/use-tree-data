@@ -4,6 +4,7 @@ import {
   DefaultDataType,
   Filter,
   Find,
+  FindAll,
   ForEach,
   GetPath,
   Insert,
@@ -44,6 +45,12 @@ export default function useTreeData<DataType extends object = DefaultDataType>(
     },
     [tree]
   );
+  const findAll: FindAll<DataType> = useCallback(
+    callback => {
+      return treeHelper.current.findAll(tree, callback);
+    },
+    [tree]
+  );
   const forEach: ForEach<DataType> = useCallback(
     callback => {
       return treeHelper.current.forEach(tree, callback);
@@ -63,7 +70,7 @@ export default function useTreeData<DataType extends object = DefaultDataType>(
 
   return [
     filtered,
-    { setTree, insert, remove, update, move, setFilter, find, forEach, getPath },
+    { setTree, insert, remove, update, move, setFilter, find, findAll, forEach, getPath },
     treeHelper,
   ] as const;
 }

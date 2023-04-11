@@ -19,6 +19,7 @@ export type Remove<T extends object> = HookMethod<TreeHelper<T>['remove']>;
 export type Update<T extends object> = HookMethod<TreeHelper<T>['update']>;
 export type Move<T extends object> = HookMethod<TreeHelper<T>['move']>;
 export type Find<T extends object> = HookMethod<TreeHelper<T>['find']>;
+export type FindAll<T extends object> = HookMethod<TreeHelper<T>['findAll']>;
 export type ForEach<T extends object> = HookMethod<TreeHelper<T>['forEach']>;
 export type Filter<T extends object> = HookMethod<TreeHelper<T>['filter']>;
 export type GetPath<T extends object> = HookMethod<TreeHelper<T>['getPath']>;
