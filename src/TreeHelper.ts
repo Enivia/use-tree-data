@@ -127,10 +127,10 @@ class TreeHelper<DataType extends object = DefaultDataType> {
     }, []);
   };
 
-  find = (tree: DataType[], callback: NodeCallback<DataType>): DataType | void =>
+  find = (tree: DataType[], callback: NodeCallback<DataType>) =>
     find(tree, callback, n => this.$getChildren(n));
 
-  findAll = (tree: DataType[], callback: NodeCallback<DataType>): DataType[] => {
+  findAll = (tree: DataType[], callback: NodeCallback<DataType>) => {
     const result: DataType[] = [];
     forEach(tree, node => {
       if (callback(node)) result.push(node);

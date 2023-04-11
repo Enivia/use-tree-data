@@ -13,13 +13,18 @@ export type NodeCallback<T> = (n: T) => boolean;
 type MethodParams<T extends (...args: any) => any> = T extends (_: any, ...args: infer P) => any
   ? P
   : never;
-type HookMethod<T extends (...args: any) => any> = (...params: MethodParams<T>) => void;
-export type Insert<T extends object> = HookMethod<TreeHelper<T>['insert']>;
-export type Remove<T extends object> = HookMethod<TreeHelper<T>['remove']>;
-export type Update<T extends object> = HookMethod<TreeHelper<T>['update']>;
-export type Move<T extends object> = HookMethod<TreeHelper<T>['move']>;
-export type Find<T extends object> = HookMethod<TreeHelper<T>['find']>;
-export type FindAll<T extends object> = HookMethod<TreeHelper<T>['findAll']>;
-export type ForEach<T extends object> = HookMethod<TreeHelper<T>['forEach']>;
-export type Filter<T extends object> = HookMethod<TreeHelper<T>['filter']>;
-export type GetPath<T extends object> = HookMethod<TreeHelper<T>['getPath']>;
+type HookMethod<T extends (...args: any) => any, R = ReturnType<T>> = (
+  ...params: MethodParams<T>
+) => R;
+export interface TreeActions<T extends object> {
+  setTree(val: T[]): void;
+  insert: HookMethod<TreeHelper<T>['insert'], void>;
+  remove: HookMethod<TreeHelper<T>['remove'], void>;
+  update: HookMethod<TreeHelper<T>['update'], void>;
+  move: HookMethod<TreeHelper<T>['move'], void>;
+  setFilter: HookMethod<TreeHelper<T>['filter'], void>;
+  find: HookMethod<TreeHelper<T>['find']>;
+  findAll: HookMethod<TreeHelper<T>['findAll']>;
+  forEach: HookMethod<TreeHelper<T>['forEach']>;
+  getPath: HookMethod<TreeHelper<T>['getPath']>;
+}

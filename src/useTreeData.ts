@@ -1,63 +1,53 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import TreeHelper from './TreeHelper';
-import {
-  DefaultDataType,
-  Filter,
-  Find,
-  FindAll,
-  ForEach,
-  GetPath,
-  Insert,
-  Move,
-  Remove,
-  TreeHelperOptions,
-  Update,
-} from './interfaces';
+import { DefaultDataType, TreeActions, TreeHelperOptions } from './interfaces';
 
 export default function useTreeData<DataType extends object = DefaultDataType>(
   data?: DataType[],
   option?: TreeHelperOptions<DataType>
-) {
+): [DataType[], TreeActions<DataType>, RefObject<TreeHelper<DataType>>] {
   const [tree, setTree] = useState<DataType[]>(data || []);
-  const [filterParams, setFilterParams] = useState<Parameters<Filter<DataType>>>();
+  const [filterParams, setFilterParams] = useState<
+    Parameters<TreeActions<DataType>['setFilter']>
+  >();
 
   const treeHelper = useRef(new TreeHelper(option));
   useEffect(() => treeHelper.current.use(option), [option]);
 
-  const insert: Insert<DataType> = useCallback((node, callback) => {
+  const insert: TreeActions<DataType>['insert'] = useCallback((node, callback) => {
     setTree(prev => treeHelper.current.insert(prev, node, callback));
   }, []);
-  const remove: Remove<DataType> = useCallback(callback => {
+  const remove: TreeActions<DataType>['remove'] = useCallback(callback => {
     setTree(prev => treeHelper.current.remove(prev, callback));
   }, []);
-  const update: Update<DataType> = useCallback((callback, props) => {
+  const update: TreeActions<DataType>['update'] = useCallback((callback, props) => {
     setTree(prev => treeHelper.current.update(prev, callback, props));
   }, []);
-  const move: Move<DataType> = useCallback((callback, parent) => {
+  const move: TreeActions<DataType>['move'] = useCallback((callback, parent) => {
     setTree(prev => treeHelper.current.move(prev, callback, parent));
   }, []);
-  const setFilter: Filter<DataType> = useCallback((...args) => {
+  const setFilter: TreeActions<DataType>['setFilter'] = useCallback((...args) => {
     setFilterParams(args[0] ? args : undefined);
   }, []);
-  const find: Find<DataType> = useCallback(
+  const find: TreeActions<DataType>['find'] = useCallback(
     callback => {
       return treeHelper.current.find(tree, callback);
     },
     [tree]
   );
-  const findAll: FindAll<DataType> = useCallback(
+  const findAll: TreeActions<DataType>['findAll'] = useCallback(
     callback => {
       return treeHelper.current.findAll(tree, callback);
     },
     [tree]
   );
-  const forEach: ForEach<DataType> = useCallback(
+  const forEach: TreeActions<DataType>['forEach'] = useCallback(
     callback => {
       return treeHelper.current.forEach(tree, callback);
     },
     [tree]
   );
-  const getPath: GetPath<DataType> = useCallback(
+  const getPath: TreeActions<DataType>['getPath'] = useCallback(
     callback => {
       return treeHelper.current.getPath(tree, callback);
     },
@@ -72,5 +62,5 @@ export default function useTreeData<DataType extends object = DefaultDataType>(
     filtered,
     { setTree, insert, remove, update, move, setFilter, find, findAll, forEach, getPath },
     treeHelper,
-  ] as const;
+  ];
 }
