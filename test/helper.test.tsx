@@ -82,6 +82,13 @@ describe('util: treeHelper', () => {
     expect(originalHelper.find(original, n => n.id === '2')).toEqual({ id: '2' });
     expect(customHelper.find(custom, n => n.id === '1-1')).toEqual({ id: '1-1' });
   });
+  it('findAll', () => {
+    expect(originalHelper.findAll(original, n => /^1/.test(n.id))).toEqual([
+      { id: '1', children: [{ id: '1-1' }, { id: '1-2' }] },
+      { id: '1-1' },
+      { id: '1-2' },
+    ]);
+  });
   it('getPath', () => {
     expect(originalHelper.getPath(original, n => n.id === '1-1')).toEqual([
       { id: '1', children: [{ id: '1-1' }, { id: '1-2' }] },

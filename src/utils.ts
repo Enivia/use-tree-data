@@ -19,21 +19,16 @@ export function find<T extends DefaultDataType = DefaultDataType>(
   tree: T[],
   callback: NodeCallback<T>,
   getChildren: (node: T) => T[] = defaultGetChildren
-): T | null {
-  if (!tree) return null;
-  let open = [...tree];
-  let node = open.pop();
-  while (node) {
-    if (callback(node)) {
-      return node;
+): T | void {
+  const dfs = (nodes: T[]): T | void => {
+    for (const n of nodes || []) {
+      if (callback(n)) return n;
+      const children = getChildren(n);
+      const res = dfs(children);
+      if (res) return res;
     }
-    const children = getChildren(node);
-    if (children) {
-      open = children.concat(open);
-    }
-    node = open.pop();
-  }
-  return null;
+  };
+  return dfs(tree);
 }
 
 export function getPath<T extends DefaultDataType = DefaultDataType>(
